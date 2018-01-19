@@ -1,0 +1,46 @@
+#!/bin/bash
+
+command=$1
+command_ext=$2
+
+compose_down() {
+  docker-compose stop
+  docker-compose down
+}
+
+compose_up() {
+  docker-compose up
+}
+
+exec_container() {
+  case "$command_ext" in
+  app)
+  	docker exec -it reportnodeapi_application_1 bash
+  	exit 0
+  	;;
+  mongo)
+	docker exec -it reportnodeapi_mongo_1 bash
+	exit 0
+	;;
+  esac
+}
+
+case "$command" in
+  start)
+    compose_down
+    echo "Starting up container Web and opening a TTY Session"
+    compose_up
+    exit 0
+    ;;
+  stop)
+    echo "Stopping containers..."
+    compose_down
+    echo "Stopping containers... Done"
+    exit 0
+    ;;
+  console)
+    echo "Starting up TTY Session on 'web'"
+    exec_container
+    exit 0
+    ;;
+esac

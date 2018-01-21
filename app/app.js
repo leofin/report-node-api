@@ -56,6 +56,6 @@ app.get("/user_history/:id?", function (req, res) {
 });
 
 //Porta de escuta do servidor
-app.listen(8080, function() {
+app.listen(3000, function() {
   console.log('Funcionando');
 });

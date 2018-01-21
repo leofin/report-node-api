@@ -1,5 +1,4 @@
 var express = require('express');
-var mongo = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -8,18 +7,26 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-//Conexão com o MongoDB
-var mongoaddr = 'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + ':27017/conpass_desafio';
-console.log(mongoaddr);
-mongo.connect(mongoaddr);
+require("./setup_mongo.js")
 
-//Model user
+//Models
 User = require("./models/user.js")
+Step = require("./models/step.js")
+Flow = require("./models/flow.js")
+Activity = require("./models/activity.js")
+FlowStatistics = require("./models/flow_statistics.js")
+UserHistory = require("./models/user_history.js")
 
-//GET param - Retorna o user correspondente da ID informada
-app.get("/user/:id?", function (req, res) {
-  var id = req.params.id;
-  User.findById(id, function(err, regs){
+//GET param - Retorna relatorio de estatisticas de fluxos paginado, possibilidade de filtro pelo ID do fluxo
+app.get("/flow_statistics/:id?", function (req, res) {
+  let page = req.query.page || 1;
+  let size = req.query.size || 10;
+  let query = req.params.id ? {flow: req.params.id} : {};
+  let offset = size*(page-1);
+
+  console.log(offset);
+
+  FlowStatistics.find(query).limit(size).skip(offset).exec(function(err, regs){
     if (err) {
       console.log(err);
       res.send(err);
@@ -29,63 +36,22 @@ app.get("/user/:id?", function (req, res) {
   });
 });
 
-//GET param - Retorna o user correspondente da ID informada
-app.get("/user2/:id?", function (req, res) {
-  var id = req.params.id;
-  User.find(id, function(err, regs){
+//GET param - Retorna relatorio de historico do usuario paginado, possibilidade de filtro pelo ID do user
+app.get("/user_history/:id?", function (req, res) {
+  let page = req.query.page || 1;
+  let size = req.query.size || 10;
+  let query = req.params.id ? {user: req.params.id} : {};
+  let offset = size*(page-1);
+
+  console.log(offset);
+
+  UserHistory.find(query).limit(size).skip(offset).exec(function(err, regs){
     if (err) {
       console.log(err);
       res.send(err);
     } else {
       res.json(regs);
     }
-  });
-});
-
-//POST - Adiciona um registro
-app.post("/api/add", function (req, res) {
-  var register = new Model({
-    'descricao' : req.body.descricao,
-    'concluido' : req.body.concluido
-  });
-  register.save(function (err) {
-    if (err) {
-      console.log(err);
-      res.send(err);
-      res.end();
-    }
-  });
-  res.send(register);
-  res.end();
-});
-
-//GET - Retorna todos os registros existentes no banco
-app.get("/api/all", function (req, res) {
-  User.find(function(err, todos) {
-    if (err) {
-      res.json(err);
-    } else {
-      res.json(todos);
-    }
-  })
-});
-
-//PUT - Atualiza um registro
-app.put("/api/add/:id", function (req, res) {
-  Model.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err)  {
-      return next(err);
-    } else {
-      res.json(post);
-    }
-  });
-});
-
-//DELETE - Deleta um registro
-app.delete("/api/delete/:id", function (req, res) {
- Model.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
   });
 });
 

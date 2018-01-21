@@ -2,12 +2,12 @@ var mongo = require('mongoose');
 var Schema = mongo.Schema;
 
 var activitySchema = new Schema({
-  flow: {ref:'flow', required: true},
-  step: {ref:'step', required: true},
-  user: {ref:'user', required: true},
-  status: String,
+  flow: {type: mongo.Schema.Types.ObjectId, ref:'Flow', required: true},
+  step: {type: mongo.Schema.Types.ObjectId, ref:'Step', required: true},
+  user: {type: mongo.Schema.Types.ObjectId, ref:'User', required: true},
+  status: {type: String, enum: ['start', 'end', 'cancel']},
   occured: Date,
-  type: String
+  type: {type: String, enum: ['flow', 'step']}
 });
 
 var Activity = mongo.model('Activities', activitySchema);

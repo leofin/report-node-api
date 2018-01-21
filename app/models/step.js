@@ -3,7 +3,7 @@ var Schema = mongo.Schema;
 
 var stepSchema = new Schema({
   title: {type: String, required: true},
-  flow: {ref:'flow', required: true}
+  flow: {type: mongo.Schema.Types.ObjectId, ref:'Flow', required: true}
 });
 
 var Step = mongo.model('Steps', stepSchema);

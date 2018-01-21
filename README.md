@@ -23,13 +23,13 @@ Pré-requisitos instalados:
 # Comandos de controle
 
  - Inicializar serviço
-  - ./commands start
+   - ./commands start
  - Entrar no console do container NodeJs - Precisa estar com o serviço rodando
-  - ./commands console app
+   - ./commands console app
  - Entrar no console do container MongoDB - Precisa estar com o serviço rodando
-  - ./commands console mongo
+   - ./commands console mongo
  - Buildar ambiente - Por algum motivo que não descobri, não consigo dar build após estar com o banco de dados importado.
-  - ./commands build
+   - ./commands build
   
 # Serviço
 

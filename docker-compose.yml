@@ -1,10 +1,10 @@
 mongo:  
-  image: mongo:latest  
+  image: mongo:3.0.2  
   ports:
    - "27017:27017"  
   volumes:
    - './data:/data/db'
-   - ./app:/usr/src/report-node-api/app  
+   - ./app:/usr/src/report-node-api/app
 application:
   build: .  
   command: bash -c "npm install; nodemon app.js --color=always"  

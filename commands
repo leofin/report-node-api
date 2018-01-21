@@ -12,6 +12,10 @@ compose_up() {
   docker-compose up
 }
 
+compose_build(){
+  docker-compose build
+}
+
 exec_container() {
   case "$command_ext" in
   app)
@@ -41,6 +45,11 @@ case "$command" in
   console)
     echo "Starting up TTY Session on 'web'"
     exec_container
+    exit 0
+    ;;
+  build)
+    echo "Building compose"
+    compose_build
     exit 0
     ;;
 esac

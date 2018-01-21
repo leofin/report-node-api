@@ -17,8 +17,8 @@ Pré-requisitos instalados:
 
 # Instalação do docker e docker-compose
 
-https://docs.docker.com/engine/installation/
-https://docs.docker.com/compose/install/
+- https://docs.docker.com/engine/installation/
+- https://docs.docker.com/compose/install/
 
 # Comandos de controle
 
